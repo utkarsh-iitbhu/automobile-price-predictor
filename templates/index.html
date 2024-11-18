@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automobile Price Prediction</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 2rem;
+        }
+
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2c3e50;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #eee;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            color: #2c3e50;
+        }
+
+        .header p {
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        input, select {
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        select {
+            background-color: white;
+        }
+
+        .submit-container {
+            grid-column: 1 / -1;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        button {
+            background-color: #2ecc71;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            min-width: 200px;
+        }
+
+        button:hover {
+            background-color: #27ae60;
+        }
+
+        .result {
+            grid-column: 1 / -1;
+            margin-top: 2rem;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.5rem;
+            padding: 1.5rem;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            border: 2px solid #e9ecef;
+        }
+
+        .price {
+            color: #2ecc71;
+            font-size: 2rem;
+            font-weight: bold;
+            display: block;
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            form {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Automobile Price Prediction</h1>
+            <p>Enter vehicle specifications to predict its market price</p>
+        </div>
+        <form id="prediction-form">
+            <div class="form-group">
+                <label for="fuel_type">Fuel Type:</label>
+                <select id="fuel_type" name="fuel_type" required>
+                    <option value="">Select Fuel Type</option>
+                    <option value="gas">Gas</option>
+                    <option value="diesel">Diesel</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="aspiration">Aspiration:</label>
+                <select id="aspiration" name="aspiration" required>
+                    <option value="">Select Aspiration</option>
+                    <option value="std">Standard</option>
+                    <option value="turbo">Turbo</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="num_of_doors">Number of Doors:</label>
+                <select id="num_of_doors" name="num_of_doors" required>
+                    <option value="">Select Number of Doors</option>
+                    <option value="two">Two</option>
+                    <option value="four">Four</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="body_style">Body Style:</label>
+                <select id="body_style" name="body_style" required>
+                    <option value="">Select Body Style</option>
+                    <option value="convertible">Convertible</option>
+                    <option value="hatchback">Hatchback</option>
+                    <option value="sedan">Sedan</option>
+                    <option value="wagon">Wagon</option>
+                    <option value="hardtop">Hardtop</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="drive_wheels">Drive Wheels:</label>
+                <select id="drive_wheels" name="drive_wheels" required>
+                    <option value="">Select Drive Wheels</option>
+                    <option value="rwd">Rear Wheel Drive</option>
+                    <option value="fwd">Front Wheel Drive</option>
+                    <option value="4wd">4 Wheel Drive</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="engine_location">Engine Location:</label>
+                <select id="engine_location" name="engine_location" required>
+                    <option value="">Select Engine Location</option>
+                    <option value="front">Front</option>
+                    <option value="rear">Rear</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="wheel_base">Wheel Base (inches):</label>
+                <input type="number" id="wheel_base" name="wheel_base" min="86.6" max="120.9" step="0.1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="length">Length (inches):</label>
+                <input type="number" id="length" name="length" min="141.1" max="208.1" step="0.1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="width">Width (inches):</label>
+                <input type="number" id="width" name="width" min="60.3" max="72.3" step="0.1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="height">Height (inches):</label>
+                <input type="number" id="height" name="height" min="47.8" max="59.8" step="0.1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="curb_weight">Curb Weight (lbs):</label>
+                <input type="number" id="curb_weight" name="curb_weight" min="1488" max="4066" required>
+            </div>
+
+            <div class="form-group">
+                <label for="engine_type">Engine Type:</label>
+                <select id="engine_type" name="engine_type" required>
+                    <option value="">Select Engine Type</option>
+                    <option value="dohc">DOHC</option>
+                    <option value="ohc">OHC</option>
+                    <option value="l">L</option>
+                    <option value="ohcv">OHCV</option>
+                    <option value="ohcf">OHCF</option>
+                    <option value="rotor">Rotor</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="num_of_cylinders">Number of Cylinders:</label>
+                <select id="num_of_cylinders" name="num_of_cylinders" required>
+                    <option value="">Select Number of Cylinders</option>
+                    <option value="four">Four</option>
+                    <option value="six">Six</option>
+                    <option value="five">Five</option>
+                    <option value="eight">Eight</option>
+                    <option value="two">Two</option>
+                    <option value="three">Three</option>
+                    <option value="twelve">Twelve</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="engine_size">Engine Size (cubic inches):</label>
+                <input type="number" id="engine_size" name="engine_size" min="61" max="326" required>
+            </div>
+
+            <div class="form-group">
+                <label for="fuel_system">Fuel System:</label>
+                <select id="fuel_system" name="fuel_system" required>
+                    <option value="">Select Fuel System</option>
+                    <option value="mpfi">MPFI</option>
+                    <option value="2bbl">2BBL</option>
+                    <option value="mfi">MFI</option>
+                    <option value="1bbl">1BBL</option>
+                    <option value="spfi">SPFI</option>
+                    <option value="4bbl">4BBL</option>
+                    <option value="idi">IDI</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="bore">Bore (inches):</label>
+                <input type="number" id="bore" name="bore" min="2.54" max="3.94" step="0.01" required>
+            </div>
+
+            <div class="form-group">
+                <label for="stroke">Stroke (inches):</label>
+                <input type="number" id="stroke" name="stroke" min="2.07" max="4.17" step="0.01" required>
+            </div>
+
+            <div class="form-group">
+                <label for="compression_ratio">Compression Ratio:</label>
+                <input type="number" id="compression_ratio" name="compression_ratio" min="7" max="23" step="0.1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="horsepower">Horsepower:</label>
+                <input type="number" id="horsepower" name="horsepower" min="48" max="288" required>
+            </div>
+
+            <div class="form-group">
+                <label for="peak_rpm">Peak RPM:</label>
+                <input type="number" id="peak_rpm" name="peak_rpm" min="4150" max="6600" required>
+            </div>
+
+            <div class="form-group">
+                <label for="city_mpg">City MPG:</label>
+                <input type="number" id="city_mpg" name="city_mpg" min="13" max="49" required>
+            </div>
+
+            <div class="form-group">
+                <label for="highway_mpg">Highway MPG:</label>
+                <input type="number" id="highway_mpg" name="highway_mpg" min="16" max="54" required>
+            </div>
+
+            <div class="submit-container">
+                <button type="submit">Predict Price</button>
+            </div>
+        </form>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('prediction-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = isNaN(value) ? value : parseFloat(value);
+            });
+
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                const resultElement = document.getElementById('result');
+                const price = new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                }).format(result.predicted_price);
+                resultElement.innerHTML = `Predicted Price: <span class="price">${price}</span>`;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('result').innerHTML = '<span style="color: #e74c3c;">Error: Failed to get prediction</span>';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+# Exclude Python bytecode files
+__pycache__
+*.pyc
+*.pyo
+.venv
+# Exclude environment and local files
+.env
+.venv
+*.log
+
+# Exclude Docker-related files
+Dockerfile
+.dockerignore
+
+# Exclude any sensitive files
+*.key
+*.pem
+*.env
+
+# Exclude Jupyter notebooks if not required
+*.ipynb
+
+# Exclude unnecessary directories
+dist/
+*.egg-info
